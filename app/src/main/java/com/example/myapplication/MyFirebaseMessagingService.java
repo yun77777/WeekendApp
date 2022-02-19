@@ -27,21 +27,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     @Override
     public void onNewToken(@NonNull String token) {
         super.onNewToken(token);
-        //token을 서버로 전송
     }
 
     private static final String TAG = "FirebaseMsgService";
-
-    private String msg, title;
-
-
-    //
-
-    String id = "my_channel_02";
-    CharSequence name = "fcm_nt";
-    String description = "push";
-    int importance = NotificationManager.IMPORTANCE_LOW;
-    MediaPlayer mediaPlayer;
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
@@ -53,61 +41,24 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         } else if(remoteMessage.getData().size() > 0 ) {//background
             sendNotification(remoteMessage.getData().get("body"), remoteMessage.getData().get("title"));
         }
-//        title = remoteMessage.getNotification().getTitle();
-//        msg = remoteMessage.getNotification().getBody();
-//
-//        Log.e(TAG, "title: " + title);
-//        Log.e(TAG, "msg: " + msg);
-//
-//        Intent intent = new Intent(this, MainActivity.class);
-//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//
-//        PendingIntent contentintent = PendingIntent.getActivity(this, 0, new Intent(this, MainActivity.class), 0);
-//
-//        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, "test").setSmallIcon(R.mipmap.ic_launcher)
-//                .setContentTitle(title)
-//                .setContentText(msg)
-//                .setAutoCancel(true)
-//                .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
-//                .setVibrate(new long[]{1, 1000});
-//
-//        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-//
-//        notificationManager.notify(0, mBuilder.build());
-//
-//        mBuilder.setContentIntent(contentintent);
 
+        super.onMessageReceived(remoteMessage);
     }
 
     private void sendNotification(String messageBody, String messageTitle) {
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
+        final String CHANNEL_ID = "my_channel_02";
+        NotificationChannel channel = new NotificationChannel(
+                CHANNEL_ID,
+                "Name",
+                NotificationManager.IMPORTANCE_HIGH
+        );
 
-        NotificationManager mNotificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
-        NotificationChannel mChannel = new NotificationChannel(id, name, importance);
-        mChannel.setDescription(description);
-        mChannel.enableLights(true);
-        mNotificationManager.createNotificationChannel(mChannel);
-        mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
-        int notifyID = 2;
-        String CHANNEL_ID = "my_channel_02";
-
-        try {
-            Notification notification = new Notification.Builder(MyFirebaseMessagingService.this)
-                    .setContentTitle(URLDecoder.decode(messageTitle, "UTF-8"))
-                    .setContentText(URLDecoder.decode(messageBody, "UTF-8"))
-                    .setSmallIcon(R.drawable.hello)
-                    .setChannelId(CHANNEL_ID)
-                    .setContentIntent(pendingIntent)
-                    .build();
-//            mediaPlayer = MediaPlayer.create(this, R.raw.alarm);
-//            mediaPlayer.start();
-
-            mNotificationManager.notify(notifyID, notification);
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
+        getSystemService(NotificationManager.class).createNotificationChannel(channel);
+        Notification.Builder notification = new Notification.Builder(this, CHANNEL_ID)
+                .setContentTitle(messageTitle)
+                .setContentText(messageBody)
+                .setSmallIcon(R.drawable.hello) // working well for foreground, data in body(not notification)
+                .setAutoCancel(true);
+        NotificationManagerCompat.from(this).notify(1, notification.build());
     }
 }
