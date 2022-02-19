@@ -16,6 +16,8 @@ import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -45,6 +47,13 @@ public class MainActivity extends AppCompatActivity {
     private Button btn_wv;
     private Button btn_open;
     private Button btn_capture;
+
+    private Button btn_start;
+    private Button btn_stop;
+
+    Thread thread;
+    boolean isThread = false;
+
     private EditText et_test;
     private String str;
     private ImageView iv_result;
@@ -56,6 +65,41 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        btn_start = (Button)findViewById(R.id.btn_start);
+        btn_stop = (Button)findViewById(R.id.btn_stop);
+
+        // thread is started
+        btn_start.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                isThread = true;
+                thread = new Thread() {
+                  public void run() {
+                      while(isThread) {
+                          try {
+                              sleep(5000);
+                          } catch (InterruptedException e) {
+                              e.printStackTrace();
+                          }
+                        handler.sendEmptyMessage(0);
+                      }
+                  }
+                };
+
+                thread.start();
+            }
+        });
+
+        // thread is stopped
+        btn_stop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                isThread = false;
+            }
+        });
+
+
 
         // check permission
         TedPermission.with(getApplicationContext())
@@ -196,7 +240,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if(requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Bitmap bitmap = BitmapFactory.decodeFile(imageFilePath);
             ExifInterface exif = null;
 
@@ -209,14 +254,14 @@ public class MainActivity extends AppCompatActivity {
             int exifOrientation;
             int exifDegree;
 
-            if(exif != null) {
+            if (exif != null) {
                 exifOrientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
                 exifDegree = exifOrientationToDegress(exifOrientation);
             } else {
                 exifDegree = 0;
             }
 
-            ((ImageView)findViewById(R.id.iv_result)).setImageBitmap(rotate(bitmap,exifDegree));
+            ((ImageView) findViewById(R.id.iv_result)).setImageBitmap(rotate(bitmap, exifDegree));
         }
     }
 
@@ -248,6 +293,13 @@ public class MainActivity extends AppCompatActivity {
         public void onPermissionDenied(ArrayList<String> deniedPermissions) {
             Toast.makeText(getApplicationContext(), "the permission is denied", Toast.LENGTH_SHORT).show();
 
+        }
+    };
+
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            Toast.makeText(getApplicationContext(), "thread", Toast.LENGTH_SHORT).show();
         }
     };
 }
