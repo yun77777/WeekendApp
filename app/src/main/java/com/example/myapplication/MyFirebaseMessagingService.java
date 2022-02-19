@@ -23,7 +23,22 @@ import java.net.URLDecoder;
 
 @RequiresApi(api = Build.VERSION_CODES.O)
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
-
+    /*
+    {
+        "to": "token",
+            "priority" :"high",
+//            "notification": {
+//                    "title": "Postma@n",
+//                            "body" : "he@llo worl@d",
+//                            "channel_id": "my_channel_02"
+//                },
+            "data": {
+            "title": "@",
+                    "body" : "he@llo wo2rl1d",
+                    "channel_id": "my_channel_02"
+            }
+    }
+    */
     @Override
     public void onNewToken(@NonNull String token) {
         super.onNewToken(token);
