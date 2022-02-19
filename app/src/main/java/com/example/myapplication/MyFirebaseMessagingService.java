@@ -71,10 +71,15 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     }
 
     private void sendNotification(String messageBody, String messageTitle) {
+        Intent intent = new Intent(this, MainActivity.class);
+
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
+
         final String CHANNEL_ID = "my_channel_02";
         NotificationChannel channel = new NotificationChannel(
                 CHANNEL_ID,
-                "Name",
+                "pushName",
                 NotificationManager.IMPORTANCE_HIGH
         );
 
@@ -83,7 +88,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 .setContentTitle(messageTitle)
                 .setContentText(messageBody)
                 .setSmallIcon(R.drawable.hello) // working well for foreground, data in body(not notification)
-                .setAutoCancel(true);
+                .setAutoCancel(true)
+                .setContentIntent(pendingIntent);
+
         NotificationManagerCompat.from(this).notify(1, notification.build());
     }
 }
