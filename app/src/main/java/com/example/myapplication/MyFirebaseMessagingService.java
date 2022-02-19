@@ -6,10 +6,12 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.media.RingtoneManager;
 import android.os.Build;
 import android.util.Log;
+import android.widget.Switch;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -27,18 +29,21 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     {
         "to": "token",
             "priority" :"high",
-//            "notification": {
+//            "notification": { //background message
 //                    "title": "Postma@n",
 //                            "body" : "he@llo worl@d",
 //                            "channel_id": "my_channel_02"
 //                },
-            "data": {
+            "data": { //foreground message
             "title": "@",
                     "body" : "he@llo wo2rl1d",
                     "channel_id": "my_channel_02"
             }
     }
     */
+
+    private Switch swc_push;
+
     @Override
     public void onNewToken(@NonNull String token) {
         super.onNewToken(token);
@@ -49,10 +54,15 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         Log.e(TAG, "onMessageReceived");
+        SharedPreferences sharedPreferences = getSharedPreferences("shared", 0);
+        String isAllowed = sharedPreferences.getString("push", "");
+
+        Log.e("isAllowed: ", isAllowed);
+
+        if(isAllowed.equals("false")) return;
 
         if(remoteMessage.getNotification() != null) { //foreground
             sendNotification(remoteMessage.getNotification().getBody(), remoteMessage.getNotification().getTitle());
-
         } else if(remoteMessage.getData().size() > 0 ) {//background
             sendNotification(remoteMessage.getData().get("body"), remoteMessage.getData().get("title"));
         }

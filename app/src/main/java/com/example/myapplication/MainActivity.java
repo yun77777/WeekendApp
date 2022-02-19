@@ -10,6 +10,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
@@ -25,8 +26,10 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
     private String imageFilePath;
     private Uri photoUri;
 
-    private Button btn_move;
+//    private Button btn_move;
     private Button btn_shared;
     private Button btn_wv;
     private Button btn_open;
@@ -69,6 +72,8 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView tv_result;
 
+    private Switch swc_push;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,6 +85,33 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("token:", token);
             }
         });
+
+        swc_push = (Switch)findViewById(R.id.swc_push);
+
+        SharedPreferences sharedPreferences = getSharedPreferences("shared", 0);
+
+        String push = sharedPreferences.getString("push", "");
+        boolean bool = false;
+        if(push.equals("true")) {
+            Log.e("swc_push: On", push);
+            bool = true;
+        } else {
+            Log.e("swc_push: Off", push);
+        }
+
+        swc_push.setChecked(bool);
+
+        swc_push.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString("push", String.valueOf(b));
+                editor.commit();
+                Log.e("b:", String.valueOf(b));
+
+            }
+        });
+
 
         btn_dialog = (Button)findViewById(R.id.btn_dialog);
         tv_result = (TextView)findViewById(R.id.tv_result);
@@ -157,11 +189,13 @@ public class MainActivity extends AppCompatActivity {
                 .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
                 .check();
 
-        btn_move = (Button)findViewById(R.id.btn_move);
+//        btn_move = (Button)findViewById(R.id.btn_move);
+
         btn_shared = (Button)findViewById(R.id.btn_shared);
         btn_wv = (Button)findViewById(R.id.btn_wv);
         btn_open = (Button)findViewById(R.id.btn_open);
         btn_capture = (Button)findViewById(R.id.btn_capture);
+
 
 //        et_test = (EditText)findViewById(R.id.et_test);
 //        iv_result = (ImageView)findViewById(R.id.iv_result);
@@ -239,16 +273,16 @@ public class MainActivity extends AppCompatActivity {
 //            }
 //        });
 
-        btn_move.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                str = et_test.getText().toString();
-                Intent intent = new Intent(MainActivity.this, SubActivity.class);
-                intent.putExtra("str", str);
-                Log.d("et_test ",str);
-                startActivity(intent);
-            }
-        });
+//        btn_move.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                str = et_test.getText().toString();
+//                Intent intent = new Intent(MainActivity.this, SubActivity.class);
+//                intent.putExtra("str", str);
+//                Log.d("et_test ",str);
+//                startActivity(intent);
+//            }
+//        });
     }
 
     private File createImageFile() throws IOException {
