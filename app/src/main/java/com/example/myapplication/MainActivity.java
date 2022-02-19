@@ -2,11 +2,13 @@ package com.example.myapplication;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -25,6 +27,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gun0912.tedpermission.PermissionListener;
@@ -47,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
     private Button btn_wv;
     private Button btn_open;
     private Button btn_capture;
+    private Button btn_dialog;
 
     private Button btn_start;
     private Button btn_stop;
@@ -61,10 +65,44 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private View drawerView;
 
+    private TextView tv_result;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        btn_dialog = (Button)findViewById(R.id.btn_dialog);
+        tv_result = (TextView)findViewById(R.id.tv_result);
+
+        btn_dialog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder ad = new AlertDialog.Builder(MainActivity.this);
+                ad.setIcon(R.mipmap.ic_launcher_round);
+                ad.setTitle("title");
+                ad.setMessage("this is the message of dialog");
+
+                final EditText et = new EditText(MainActivity.this);
+                ad.setView(et);
+
+                ad.setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        String result = et.getText().toString();
+                        tv_result.setText(result);
+                        dialogInterface.dismiss();
+                    }
+                });
+
+                ad.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
+                ad.show();
+            }
+        });
 
         btn_start = (Button)findViewById(R.id.btn_start);
         btn_stop = (Button)findViewById(R.id.btn_stop);
@@ -115,8 +153,8 @@ public class MainActivity extends AppCompatActivity {
         btn_open = (Button)findViewById(R.id.btn_open);
         btn_capture = (Button)findViewById(R.id.btn_capture);
 
-        et_test = (EditText)findViewById(R.id.et_test);
-        iv_result = (ImageView)findViewById(R.id.iv_result);
+//        et_test = (EditText)findViewById(R.id.et_test);
+//        iv_result = (ImageView)findViewById(R.id.iv_result);
 
         drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
         drawerView = (View)findViewById(R.id.drawer);
@@ -184,12 +222,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        iv_result.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(getApplicationContext(), "Hello", Toast.LENGTH_SHORT).show();
-            }
-        });
+//        iv_result.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Toast.makeText(getApplicationContext(), "Hello", Toast.LENGTH_SHORT).show();
+//            }
+//        });
 
         btn_move.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -261,7 +299,7 @@ public class MainActivity extends AppCompatActivity {
                 exifDegree = 0;
             }
 
-            ((ImageView) findViewById(R.id.iv_result)).setImageBitmap(rotate(bitmap, exifDegree));
+//            ((ImageView) findViewById(R.id.iv_result)).setImageBitmap(rotate(bitmap, exifDegree));
         }
     }
 
