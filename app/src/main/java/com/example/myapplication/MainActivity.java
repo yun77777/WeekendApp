@@ -15,6 +15,7 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity {
 
     private Button btn_move;
+    private Button btn_shared;
     private EditText et_test;
     private String str;
     private ImageView test;
@@ -25,8 +26,18 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         btn_move = (Button)findViewById(R.id.btn_move);
+        btn_shared = (Button)findViewById(R.id.btn_shared);
         et_test = (EditText)findViewById(R.id.et_test);
         test = (ImageView)findViewById(R.id.test);
+
+        btn_shared.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, SharedActivity.class);
+                intent.putExtra("extra","hello");
+                startActivity(intent);
+            }
+        });
 
         test.setOnClickListener(new View.OnClickListener() {
             @Override

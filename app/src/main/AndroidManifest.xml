@@ -12,6 +12,8 @@
         <activity
             android:name=".SubActivity"
             android:exported="true" />
+        <activity android:name=".SharedActivity"
+            android:exported="true"/>
         <activity
             android:name=".MainActivity"
             android:exported="true">
