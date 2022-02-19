@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.myapplication">
+
+    <!-- PG-->
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <!-- // PG-->
+
     <uses-permission android:name="android.permission.CAMERA"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
@@ -21,19 +26,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication">
 
-        <activity
-            android:name=".SubActivity"
-            android:exported="true" />
-        <activity android:name=".SharedActivity"
-            android:exported="true"/>
-        <activity android:name=".WebViewActivity"
-            android:exported="true"/>
+        <activity android:name=".SubActivity" />
+
+        <activity android:name=".SharedActivity"/>
+
+        <activity android:name=".WebViewActivity"/>
+
+        <activity android:name=".PgActivity"/>
+        
         <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -45,12 +50,6 @@
             </intent-filter>
 
         </service>
-
-<!--        <service android:name=".FirebaseinstanceIDService">-->
-<!--            <intent-filter>-->
-<!--                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>-->
-<!--            </intent-filter>-->
-<!--        </service>-->
 
         <provider
             android:authorities="com.example.myapplication"

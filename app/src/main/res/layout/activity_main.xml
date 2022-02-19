@@ -36,24 +36,24 @@
 <!--            android:layout_width="200dp"-->
 <!--            android:layout_height="wrap_content"/>-->
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal">
-            <Button
-                android:id="@+id/btn_start"
-                android:layout_margin="10dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="thread is started"/>
-            <Button
-                android:id="@+id/btn_stop"
-                android:layout_margin="10dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="thread is stopped"/>
-        </LinearLayout>
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:gravity="center"-->
+<!--            android:orientation="horizontal">-->
+<!--            <Button-->
+<!--                android:id="@+id/btn_start"-->
+<!--                android:layout_margin="10dp"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="thread is started"/>-->
+<!--            <Button-->
+<!--                android:id="@+id/btn_stop"-->
+<!--                android:layout_margin="10dp"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="thread is stopped"/>-->
+<!--        </LinearLayout>-->
 
 <!--        <Button-->
 <!--            android:id="@+id/btn_move"-->
@@ -61,11 +61,11 @@
 <!--            android:layout_height="wrap_content"-->
 <!--            android:text="button"/>-->
 
-        <Button
-            android:id="@+id/btn_shared"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="shared"/>
+<!--        <Button-->
+<!--            android:id="@+id/btn_shared"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="shared"/>-->
 
         <Button
             android:id="@+id/btn_wv"
@@ -73,11 +73,16 @@
             android:layout_height="wrap_content"
             android:text="wv"/>
 
+<!--        <Button-->
+<!--            android:id="@+id/btn_open"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="drawer"/>-->
         <Button
-            android:id="@+id/btn_open"
+            android:id="@+id/btn_pg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="drawer"/>
+            android:text="pg"/>
 
         <Button
             android:id="@+id/btn_dialog"

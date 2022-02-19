@@ -60,6 +60,8 @@ public class MainActivity extends AppCompatActivity {
     private Button btn_start;
     private Button btn_stop;
 
+    private Button btn_pg;
+
     Thread thread;
     boolean isThread = false;
 
@@ -113,6 +115,15 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+        btn_pg = (Button)findViewById(R.id.btn_pg);
+        btn_pg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, PgActivity.class);
+                startActivity(intent);
+            }
+        });
+
         btn_dialog = (Button)findViewById(R.id.btn_dialog);
         tv_result = (TextView)findViewById(R.id.tv_result);
 
@@ -146,38 +157,38 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        btn_start = (Button)findViewById(R.id.btn_start);
-        btn_stop = (Button)findViewById(R.id.btn_stop);
+//        btn_start = (Button)findViewById(R.id.btn_start);
+//        btn_stop = (Button)findViewById(R.id.btn_stop);
 
         // thread is started
-        btn_start.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                isThread = true;
-                thread = new Thread() {
-                  public void run() {
-                      while(isThread) {
-                          try {
-                              sleep(5000);
-                          } catch (InterruptedException e) {
-                              e.printStackTrace();
-                          }
-                        handler.sendEmptyMessage(0);
-                      }
-                  }
-                };
-
-                thread.start();
-            }
-        });
-
-        // thread is stopped
-        btn_stop.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                isThread = false;
-            }
-        });
+//        btn_start.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                isThread = true;
+//                thread = new Thread() {
+//                  public void run() {
+//                      while(isThread) {
+//                          try {
+//                              sleep(5000);
+//                          } catch (InterruptedException e) {
+//                              e.printStackTrace();
+//                          }
+//                        handler.sendEmptyMessage(0);
+//                      }
+//                  }
+//                };
+//
+//                thread.start();
+//            }
+//        });
+//
+//        // thread is stopped
+//        btn_stop.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                isThread = false;
+//            }
+//        });
 
 
 
@@ -191,9 +202,9 @@ public class MainActivity extends AppCompatActivity {
 
 //        btn_move = (Button)findViewById(R.id.btn_move);
 
-        btn_shared = (Button)findViewById(R.id.btn_shared);
+//        btn_shared = (Button)findViewById(R.id.btn_shared);
         btn_wv = (Button)findViewById(R.id.btn_wv);
-        btn_open = (Button)findViewById(R.id.btn_open);
+//        btn_open = (Button)findViewById(R.id.btn_open);
         btn_capture = (Button)findViewById(R.id.btn_capture);
 
 
@@ -225,20 +236,20 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        btn_open.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                drawerLayout.openDrawer(drawerView);
-            }
-        });
-
-        drawerLayout.setDrawerListener(listener);
-        drawerView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                return true;
-            }
-        });
+//        btn_open.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                drawerLayout.openDrawer(drawerView);
+//            }
+//        });
+//
+//        drawerLayout.setDrawerListener(listener);
+//        drawerView.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View view, MotionEvent motionEvent) {
+//                return true;
+//            }
+//        });
 
         Button btn_close = (Button)findViewById(R.id.btn_close);
         btn_close.setOnClickListener(new View.OnClickListener() {
@@ -257,14 +268,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        btn_shared.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, SharedActivity.class);
-                intent.putExtra("extra","hello");
-                startActivity(intent);
-            }
-        });
+//        btn_shared.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(MainActivity.this, SharedActivity.class);
+//                intent.putExtra("extra","hello");
+//                startActivity(intent);
+//            }
+//        });
 
 //        iv_result.setOnClickListener(new View.OnClickListener() {
 //            @Override
