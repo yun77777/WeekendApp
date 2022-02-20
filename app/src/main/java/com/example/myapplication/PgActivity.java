@@ -19,7 +19,7 @@ import kr.co.bootpay.listener.EventListener;
 
 public class PgActivity extends AppCompatActivity {
         BootpayWebView webview;
-        final String url = "https://{개발하신 웹 페이지 주소}";
+        final String url = "http://3.37.87.71:3000/";
 
         @Override
         protected void onCreate(@Nullable Bundle savedInstanceState) {

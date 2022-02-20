@@ -2,17 +2,17 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1, boot_user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta content="5b14c0ffb6d49c40cda92c4e" name="bootpay-application-id">
     <script src="https://cdn.bootpay.co.kr/js/bootpay-3.3.2.min.js" type="application/javascript"></script>
     <script>
 function payTest() {
 
-    //BootPay.setDevice('ANDROID');
+    BootPay.setDevice('ANDROID');
 
     var android_application_id = '6210d6f52701800021f66a27'
 
-
+    console.log('test: ',android_application_id);
     BootPay.request({
         price: '1000',
         application_id: android_application_id,
@@ -45,18 +45,18 @@ function payTest() {
             vbank_result: 1,
             quota: '0,2,3'
         }
-<!--        }).error(function (data) {-->
-<!--             Android.error(JSON.stringify(data));-->
-<!--        }).cancel(function (data) {-->
-<!--             Android.cancel(JSON.stringify(data));-->
-<!--        }).ready(function (data) {-->
-<!--             Android.ready(JSON.stringify(data));-->
-<!--        }).confirm(function (data) {-->
-<!--             Android.confirm(JSON.stringify(data));-->
-<!--       }).close(function (data) {-->
-<!--             Android.close('close');-->
-<!--       }).done(function (data) {-->
-<!--             Android.done(JSON.stringify(data));-->
+        }).error(function (data) {
+             Android.error(JSON.stringify(data));
+        }).cancel(function (data) {
+             Android.cancel(JSON.stringify(data));
+        }).ready(function (data) {
+             Android.ready(JSON.stringify(data));
+        }).confirm(function (data) {
+             Android.confirm(JSON.stringify(data));
+       }).close(function (data) {
+             Android.close('close');
+       }).done(function (data) {
+             Android.done(JSON.stringify(data));
     });
 }
 
