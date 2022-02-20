@@ -26,12 +26,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication">
 
-        <activity android:name=".SubActivity" />
-
-        <activity android:name=".SharedActivity"/>
-
-        <activity android:name=".WebViewActivity"/>
-
         <activity android:name=".PgActivity"/>
         
         <activity
