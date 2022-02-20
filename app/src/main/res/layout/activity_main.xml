@@ -20,7 +20,7 @@
             android:layout_height="500dp"/>
 
         <Switch
-            android:text="push notification"
+            android:text="on/off"
             android:id="@+id/swc_push"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

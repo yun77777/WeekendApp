@@ -16,13 +16,13 @@ function payTest() {
     BootPay.request({
         price: '1000',
         application_id: android_application_id,
-        name: '블링블링\'s 마스카라',
-        pg: 'danal',
-        method: 'phone',
+        name: '테스트상품',
+        pg: 'inicis',
+        method: 'card',
         show_agree_window: 0,
         items: [
                 {
-                item_name: '나는 아이템',
+                item_name: '아이템며',
                 qty: 1,
                 unique: '123',
                 price: 1000,
@@ -60,14 +60,11 @@ function payTest() {
     });
 }
 
-function showToast() {
-     Android.showToast("test");
-}
+
         </script>
 </head>
 <body>
-<button onclick='payTest()'>Local Html 결제시작</button>
-<button onclick='showToast()'>showToast()</button>
+<button onclick='payTest()'>PG 테스트</button>
 
 
 
