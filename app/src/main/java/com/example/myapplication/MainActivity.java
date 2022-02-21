@@ -50,8 +50,6 @@ public class MainActivity extends AppCompatActivity {
     private String imageFilePath;
     private Uri photoUri;
 
-//    private Button btn_move;
-    private Button btn_shared;
     private Button btn_wv;
     private Button btn_open;
     private Button btn_capture;
@@ -88,13 +86,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        swc_push = (Switch)findViewById(R.id.swc_push);
+        swc_push = (Switch) findViewById(R.id.swc_push);
 
         SharedPreferences sharedPreferences = getSharedPreferences("shared", 0);
 
         String push = sharedPreferences.getString("push", "");
         boolean bool = false;
-        if(push.equals("true")) {
+        if (push.equals("true")) {
             Log.e("swc_push: On", push);
             bool = true;
         } else {
@@ -115,143 +113,11 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        btn_pg = (Button)findViewById(R.id.btn_pg);
-        btn_pg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, PgActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        btn_dialog = (Button)findViewById(R.id.btn_dialog);
-        tv_result = (TextView)findViewById(R.id.tv_result);
-
-        btn_dialog.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AlertDialog.Builder ad = new AlertDialog.Builder(MainActivity.this);
-                ad.setIcon(R.mipmap.ic_launcher_round);
-                ad.setTitle("title");
-                ad.setMessage("this is the message of dialog");
-
-                final EditText et = new EditText(MainActivity.this);
-                ad.setView(et);
-
-                ad.setPositiveButton("ok", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        String result = et.getText().toString();
-                        tv_result.setText(result);
-                        dialogInterface.dismiss();
-                    }
-                });
-
-                ad.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                });
-                ad.show();
-            }
-        });
-
-//        btn_start = (Button)findViewById(R.id.btn_start);
-//        btn_stop = (Button)findViewById(R.id.btn_stop);
-
-        // thread is started
-//        btn_start.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                isThread = true;
-//                thread = new Thread() {
-//                  public void run() {
-//                      while(isThread) {
-//                          try {
-//                              sleep(5000);
-//                          } catch (InterruptedException e) {
-//                              e.printStackTrace();
-//                          }
-//                        handler.sendEmptyMessage(0);
-//                      }
-//                  }
-//                };
-//
-//                thread.start();
-//            }
-//        });
-//
-//        // thread is stopped
-//        btn_stop.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                isThread = false;
-//            }
-//        });
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawerView = (View) findViewById(R.id.drawer);
 
 
-
-        // check permission
-        TedPermission.with(getApplicationContext())
-                .setPermissionListener(permissionListener)
-                .setRationaleMessage("you need the permission for camera")
-                .setDeniedMessage("you rejected")
-                .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
-                .check();
-
-//        btn_move = (Button)findViewById(R.id.btn_move);
-
-//        btn_shared = (Button)findViewById(R.id.btn_shared);
-        btn_wv = (Button)findViewById(R.id.btn_wv);
-//        btn_open = (Button)findViewById(R.id.btn_open);
-        btn_capture = (Button)findViewById(R.id.btn_capture);
-
-
-//        et_test = (EditText)findViewById(R.id.et_test);
-//        iv_result = (ImageView)findViewById(R.id.iv_result);
-
-        drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
-        drawerView = (View)findViewById(R.id.drawer);
-
-        btn_capture.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                if (intent.resolveActivity(getPackageManager()) != null) {
-                    File photoFile = null;
-                    try {
-                        photoFile = createImageFile();
-                    } catch (IOException e) {
-
-                    }
-
-                    if(photoFile != null) {
-                        photoUri = FileProvider.getUriForFile(getApplicationContext(), getPackageName(), photoFile);
-                        intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
-                        startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
-                    }
-
-                }
-            }
-        });
-
-//        btn_open.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                drawerLayout.openDrawer(drawerView);
-//            }
-//        });
-//
-//        drawerLayout.setDrawerListener(listener);
-//        drawerView.setOnTouchListener(new View.OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View view, MotionEvent motionEvent) {
-//                return true;
-//            }
-//        });
-
-        Button btn_close = (Button)findViewById(R.id.btn_close);
+        Button btn_close = (Button) findViewById(R.id.btn_close);
         btn_close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -259,140 +125,28 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        btn_wv.setOnClickListener(new View.OnClickListener() {
+
+        DrawerLayout.DrawerListener listener = new DrawerLayout.DrawerListener() {
             @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, WebViewActivity.class);
-                intent.putExtra("extra","wv");
-                startActivity(intent);
-            }
-        });
+            public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
 
-//        btn_shared.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(MainActivity.this, SharedActivity.class);
-//                intent.putExtra("extra","hello");
-//                startActivity(intent);
-//            }
-//        });
-
-//        iv_result.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Toast.makeText(getApplicationContext(), "Hello", Toast.LENGTH_SHORT).show();
-//            }
-//        });
-
-//        btn_move.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                str = et_test.getText().toString();
-//                Intent intent = new Intent(MainActivity.this, SubActivity.class);
-//                intent.putExtra("str", str);
-//                Log.d("et_test ",str);
-//                startActivity(intent);
-//            }
-//        });
-    }
-
-    private File createImageFile() throws IOException {
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "TEST_" + timeStamp+"_";
-        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(
-                imageFileName,
-                ".jpg",
-                storageDir
-        );
-        imageFilePath =image.getAbsolutePath();
-        return image;
-    }
-
-    DrawerLayout.DrawerListener listener = new DrawerLayout.DrawerListener() {
-        @Override
-        public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
-
-        }
-
-        @Override
-        public void onDrawerOpened(@NonNull View drawerView) {
-
-        }
-
-        @Override
-        public void onDrawerClosed(@NonNull View drawerView) {
-
-        }
-
-        @Override
-        public void onDrawerStateChanged(int newState) {
-
-        }
-    };
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            Bitmap bitmap = BitmapFactory.decodeFile(imageFilePath);
-            ExifInterface exif = null;
-
-            try {
-                exif = new ExifInterface((imageFilePath));
-            } catch (IOException e) {
-                e.printStackTrace();
             }
 
-            int exifOrientation;
-            int exifDegree;
+            @Override
+            public void onDrawerOpened(@NonNull View drawerView) {
 
-            if (exif != null) {
-                exifOrientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
-                exifDegree = exifOrientationToDegress(exifOrientation);
-            } else {
-                exifDegree = 0;
             }
 
-//            ((ImageView) findViewById(R.id.iv_result)).setImageBitmap(rotate(bitmap, exifDegree));
-        }
+            @Override
+            public void onDrawerClosed(@NonNull View drawerView) {
+
+            }
+
+            @Override
+            public void onDrawerStateChanged(int newState) {
+
+            }
+        };
     }
 
-    private int exifOrientationToDegress(int exifOrientation) {
-        if(exifOrientation == ExifInterface.ORIENTATION_ROTATE_90) {
-            return 90;
-        } else if (exifOrientation ==ExifInterface.ORIENTATION_ROTATE_180){
-            return 180;
-        } else if (exifOrientation ==ExifInterface.ORIENTATION_ROTATE_270){
-            return 270;
-        }
-        return  0;
-    };
-
-    private Bitmap rotate(Bitmap bitmap,float degree) {
-        Matrix matrix = new Matrix();
-        matrix.postRotate(degree);
-        return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
-    }
-
-    PermissionListener permissionListener = new PermissionListener() {
-
-        @Override
-        public void onPermissionGranted() {
-            Toast.makeText(getApplicationContext(), "the permission is allowed", Toast.LENGTH_SHORT).show();
-        }
-
-        @Override
-        public void onPermissionDenied(ArrayList<String> deniedPermissions) {
-            Toast.makeText(getApplicationContext(), "the permission is denied", Toast.LENGTH_SHORT).show();
-
-        }
-    };
-
-    private Handler handler = new Handler() {
-        @Override
-        public void handleMessage(@NonNull Message msg) {
-            Toast.makeText(getApplicationContext(), "thread", Toast.LENGTH_SHORT).show();
-        }
-    };
 }
