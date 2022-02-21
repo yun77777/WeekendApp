@@ -32,8 +32,6 @@
 
         <activity android:name=".WebViewActivity"/>
 
-        <activity android:name=".PgActivity"/>
-        
         <activity
             android:name=".MainActivity"
             android:exported="true">
