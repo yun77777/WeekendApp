@@ -403,6 +403,7 @@ import com.example.myapplication.R;
 import com.example.myapplication.SettingsFragment;
 import com.example.myapplication.UserFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
 
 public class MainActivity extends AppCompatActivity {
     final String TAG = this.getClass().getSimpleName();
@@ -424,36 +425,77 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void SettingListener() {
-        bottomNavigationView.setOnNavigationItemSelectedListener(new TabSelectedListener());
+//        bottomNavigationView.setOnNavigationItemSelectedListener(new TabSelectedListener());
+
+        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int id = item.getItemId();
+                Log.e("id: ", String.valueOf(id));
+                switch (id) {
+                    case R.id.tab_home: {
+                        Log.e("home: ", String.valueOf(id));
+
+                        getSupportFragmentManager().beginTransaction().replace(R.id.home_ly, new HomeFragment()).commit();
+                        return true;
+                    }
+                    case R.id.tab_camera: {
+                        Log.e("camera: ", String.valueOf(id));
+
+                        getSupportFragmentManager().beginTransaction().replace(R.id.home_ly, new CameraFragment()).commit();
+                        return true;
+                    }
+                    case R.id.tab_call: {
+                        Log.e("call: ", String.valueOf(id));
+
+                        getSupportFragmentManager().beginTransaction().replace(R.id.home_ly, new CallFragment()).commit();
+                        return true;
+                    }
+                    case R.id.tab_user: {
+                        Log.e("user: ", String.valueOf(id));
+
+                        getSupportFragmentManager().beginTransaction().replace(R.id.home_ly, new UserFragment()).commit();
+                        return true;
+                    }
+                    case R.id.tab_settings: {
+                        Log.e("settings: ", String.valueOf(id));
+
+                        getSupportFragmentManager().beginTransaction().replace(R.id.home_ly, new SettingsFragment()).commit();
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
     }
 
-    class TabSelectedListener implements BottomNavigationView.OnNavigationItemSelectedListener {
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-            switch (menuItem.getItemId()) {
-                case R.id.tab_home: {
-                    getSupportFragmentManager().beginTransaction().replace(R.id.home_ly, new HomeFragment()).commit();
-                    return true;
-                }
-                case R.id.tab_camera: {
-                    getSupportFragmentManager().beginTransaction().replace(R.id.home_ly, new CameraFragment()).commit();
-                    return true;
-                }
-                case R.id.tab_call: {
-                    getSupportFragmentManager().beginTransaction().replace(R.id.home_ly, new CallFragment()).commit();
-                    return true;
-                }
-                case R.id.tab_user: {
-                    getSupportFragmentManager().beginTransaction().replace(R.id.home_ly, new UserFragment()).commit();
-                    return true;
-                }
-                case R.id.tab_settings: {
-                    getSupportFragmentManager().beginTransaction().replace(R.id.home_ly, new SettingsFragment()).commit();
-                    return true;
-                }
-            }
-            return false;
-        }
-    }
+//    class TabSelectedListener implements BottomNavigationView.OnNavigationItemSelectedListener {
+//        @Override
+//        public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+//            switch (menuItem.getItemId()) {
+//                case R.id.tab_home: {
+//                    getSupportFragmentManager().beginTransaction().replace(R.id.home_ly, new HomeFragment()).commit();
+//                    return true;
+//                }
+//                case R.id.tab_camera: {
+//                    getSupportFragmentManager().beginTransaction().replace(R.id.home_ly, new CameraFragment()).commit();
+//                    return true;
+//                }
+//                case R.id.tab_call: {
+//                    getSupportFragmentManager().beginTransaction().replace(R.id.home_ly, new CallFragment()).commit();
+//                    return true;
+//                }
+//                case R.id.tab_user: {
+//                    getSupportFragmentManager().beginTransaction().replace(R.id.home_ly, new UserFragment()).commit();
+//                    return true;
+//                }
+//                case R.id.tab_settings: {
+//                    getSupportFragmentManager().beginTransaction().replace(R.id.home_ly, new SettingsFragment()).commit();
+//                    return true;
+//                }
+//            }
+//            return false;
+//        }
+//    }
 }
 
