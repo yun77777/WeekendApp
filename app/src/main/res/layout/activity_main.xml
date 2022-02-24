@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/teal_700"
     tools:context=".MainActivity">
 
     <LinearLayout
@@ -18,22 +19,6 @@
             android:layout_marginBottom="20dp"
             android:layout_width="match_parent"
             android:layout_height="500dp"/>
-
-        <Switch
-            android:text="on/off"
-            android:id="@+id/swc_push"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textOff="Off"
-            android:textOn="On"
-            android:checked="true" />
-
-        <Button
-            android:id="@+id/btn_pg"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="pg"/>
-
     </LinearLayout>
 
 </LinearLayout>

@@ -21,8 +21,6 @@ import kr.co.bootpay.BootpayWebView;
 import kr.co.bootpay.listener.EventListener;
 
 public class MainActivity extends AppCompatActivity {
-    private Button btn_pg;
-    private Switch swc_push;
 
     private BootpayWebView webview;
 //    private String url = "https://www.naver.com";
