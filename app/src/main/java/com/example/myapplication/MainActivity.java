@@ -17,9 +17,6 @@ import android.widget.Switch;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.messaging.FirebaseMessaging;
-
 import kr.co.bootpay.BootpayWebView;
 import kr.co.bootpay.listener.EventListener;
 
@@ -30,8 +27,9 @@ public class MainActivity extends AppCompatActivity {
     private BootpayWebView webview;
 //    private String url = "https://www.naver.com";
 //private String url = "http://10.0.2.2:3000"; // instead of localhost
-    private String url = "file:///android_asset/index.html"; // instead of localhost
+//    private String url = "file:///android_asset/index.html"; // instead of localhost
 
+    final String url = "http://3.37.87.71:3000/";
 
     void doJavascript(String script) {
         final String str = script;
@@ -94,48 +92,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         webview.loadUrl(url);
-
-        // FCM gets an device token for push notification
-        FirebaseMessaging.getInstance().getToken().addOnSuccessListener(new OnSuccessListener<String>() {
-            @Override
-            public void onSuccess(String token) {
-                Log.d("token:", token);
-            }
-        });
-
-        // setting for push notification on/off
-        swc_push = (Switch) findViewById(R.id.swc_push);
-
-        SharedPreferences sharedPreferences = getSharedPreferences("shared", 0);
-
-        String push = sharedPreferences.getString("push", "");
-        boolean bool = false;
-        if (push.equals("true")) {
-            bool = true;
-        } else {
-        }
-
-        swc_push.setChecked(bool);
-
-        swc_push.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString("push", String.valueOf(b));
-                editor.commit();
-            }
-        });
-
-
-        // PG
-        btn_pg = (Button) findViewById(R.id.btn_pg);
-        btn_pg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, PgActivity.class);
-                startActivity(intent);
-            }
-        });
 
     }
 
