@@ -67,7 +67,7 @@ public class HomeFragment extends Fragment {
         webView.getSettings().setJavaScriptEnabled(true);
         webView.setWebViewClient(new WebViewClient());
 
-        webView.loadUrl("file:///android_asset/frontend/public/index.html");
+        webView.loadUrl("file:///android_asset/index.html");
 
 //        return inflater.inflate(R.layout.fragment_home, container, false);
         return view;
