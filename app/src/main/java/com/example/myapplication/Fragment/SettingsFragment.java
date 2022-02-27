@@ -1,11 +1,19 @@
-package com.example.myapplication;
+package com.example.myapplication.Fragment;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+
+import com.example.myapplication.R;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -42,6 +50,7 @@ public class SettingsFragment extends Fragment {
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
+
         return fragment;
     }
 
@@ -52,12 +61,47 @@ public class SettingsFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_settings, container, false);
+
+        ViewGroup view = (ViewGroup) inflater.inflate(R.layout.fragment_settings, container, false);
+
+        Switch swc_push = (Switch) view.findViewById(R.id.swc_push);
+
+        Log.d("swc_push:", String.valueOf(swc_push));
+        SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences("shared", 0);
+
+        String push = sharedPreferences.getString("push", "");
+        boolean bool = false;
+        if (push.equals("true")) {
+            Log.e("swc_push: On", push);
+            bool = true;
+        } else {
+            Log.e("swc_push: Off", push);
+        }
+
+        swc_push.setChecked(bool);
+
+        swc_push.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString("push", String.valueOf(b));
+                editor.commit();
+                Log.e("b:", String.valueOf(b));
+
+            }
+        });
+
+
+        return view;
+//        return inflater.inflate(R.layout.fragment_settings, container, false);
+
+
     }
 }

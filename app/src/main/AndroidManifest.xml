@@ -28,18 +28,16 @@
         android:theme="@style/Theme.MyApplication"
         android:usesCleartextTraffic="true">
 
-        <activity android:name=".JoinActivity" />
+        <activity android:name=".Activity.JoinActivity" />
 
-        <activity android:name=".MainActivity" />
+        <activity android:name=".Activity.MainActivity" />
 
-        <activity android:name=".SubActivity" />
+        <activity android:name=".ETC.SharedActivity"/>
 
-        <activity android:name=".SharedActivity"/>
-
-        <activity android:name=".WebViewActivity"/>
+        <activity android:name=".ETC.WebViewActivity"/>
 
         <activity
-            android:name=".LoginActivity"
+            android:name=".Activity.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -47,7 +45,7 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".MyFirebaseMessagingService"
+        <service android:name=".Service.MyFirebaseMessagingService"
             android:exported="true">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>

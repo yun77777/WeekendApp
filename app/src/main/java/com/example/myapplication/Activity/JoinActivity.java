@@ -1,4 +1,4 @@
-package com.example.myapplication;//package com.example.myapplication;
+package com.example.myapplication.Activity;//package com.example.myapplication;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,7 +10,9 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.myapplication.Interface.ApiService;
 import com.example.myapplication.DTO.JoinData;
+import com.example.myapplication.R;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 

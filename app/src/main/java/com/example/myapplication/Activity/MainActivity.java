@@ -1,41 +1,27 @@
-package com.example.myapplication;//package com.example.myapplication;
+package com.example.myapplication.Activity;//package com.example.myapplication;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.Switch;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.myapplication.CallFragment;
-import com.example.myapplication.CameraFragment;
-import com.example.myapplication.DTO.JoinData;
-import com.example.myapplication.DTO.JoinResponse;
-import com.example.myapplication.HomeFragment;
+import com.example.myapplication.Interface.ApiService;
+import com.example.myapplication.Fragment.CallFragment;
+import com.example.myapplication.Fragment.CameraFragment;
+import com.example.myapplication.Fragment.HomeFragment;
 import com.example.myapplication.R;
-import com.example.myapplication.SettingsFragment;
-import com.example.myapplication.UserFragment;
+import com.example.myapplication.Fragment.SettingsFragment;
+import com.example.myapplication.Fragment.UserFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-import java.io.IOException;
-
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -44,7 +30,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     LinearLayout home_ly;
     BottomNavigationView bottomNavigationView;
 
-//    private final String URL = "http://3.37.87.71:5000";
     private final String URL = "http://10.0.2.2:5000";
 
     private Retrofit retrofit;
@@ -65,6 +50,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setSelectedItemId(R.id.home);
 
+
+
+        getSupportFragmentManager().beginTransaction().replace(R.id.home_ly, new HomeFragment()).commit();
 
 
         retrofit = new Retrofit.Builder()

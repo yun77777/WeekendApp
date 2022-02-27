@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example.myapplication.Interface;
 
 import com.example.myapplication.DTO.JoinData;
 import com.example.myapplication.DTO.JoinResponse;
