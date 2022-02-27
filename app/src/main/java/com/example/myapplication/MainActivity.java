@@ -15,12 +15,16 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myapplication.CallFragment;
 import com.example.myapplication.CameraFragment;
+import com.example.myapplication.DTO.JoinData;
+import com.example.myapplication.DTO.JoinResponse;
 import com.example.myapplication.HomeFragment;
 import com.example.myapplication.R;
 import com.example.myapplication.SettingsFragment;
 import com.example.myapplication.UserFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -70,6 +74,13 @@ public class MainActivity extends AppCompatActivity {
         btn_signup = (Button)findViewById(R.id.btn_signup);
 
 
+//        Gson gson = new GsonBuilder() .setLenient() .create();
+
+//        retrofit = new Retrofit.Builder()
+//                .baseUrl(URL)
+//                .addConverterFactory(GsonConverterFactory.create(gson))
+//                .build();
+
         retrofit = new Retrofit.Builder()
                 .baseUrl(URL)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -94,18 +105,12 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
 //                new JSONTask().execute("http://3.37.87.71:5000/user/join");
 //                Call<ResponseBody> call_post = service.postFunc("post data");
-                JSONObject jsonObject = new JSONObject();
-                JSONObject userObject = new JSONObject();
-                try {
-                    userObject.accumulate("email", "email");
-                    userObject.accumulate("name", "name");
-                    userObject.accumulate("password", "password");
-                    jsonObject.accumulate("user", userObject);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                String email = et_email.getText().toString();
+                String name = et_email.getText().toString();
+                String pw = et_email.getText().toString();
 
-                Call<ResponseBody> call_post = service.postJoinFunc(jsonObject.toString());
+                Call<ResponseBody> call_post = service.postJoinFunc(new JoinData(pw,name,email));
+//                Call<ResponseBody> call_post = service.postFunc("post data");
                 call_post.enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -129,6 +134,25 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), "Response Fail", Toast.LENGTH_SHORT).show();
                     }
                 });
+//                Call<ResponseBody> call_post = service.postJoinFunc(et_email.getText().toString());
+//                call_post.enqueue(new Callback<JoinResponse>() {
+//                    @Override
+//                    public void onResponse(Call<JoinResponse> call, Response<JoinResponse> response) {
+//                            JoinResponse result = response.body();
+//
+//                            Log.v(TAG, "result = " + result);
+//                            Toast.makeText(getApplicationContext(), result.getMessage(), Toast.LENGTH_SHORT).show();
+//                            if(result.getStatus() == 200) {
+//                                finish();
+//                            }
+//                    }
+//
+//                    @Override
+//                    public void onFailure(Call<JoinResponse> call, Throwable t) {
+//                        Log.v(TAG, "Fail");
+//                        Toast.makeText(getApplicationContext(), "Response Fail", Toast.LENGTH_SHORT).show();
+//                    }
+//                });
             }
         });
 
