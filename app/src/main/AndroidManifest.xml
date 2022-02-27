@@ -28,6 +28,10 @@
         android:theme="@style/Theme.MyApplication"
         android:usesCleartextTraffic="true">
 
+        <activity android:name=".JoinActivity" />
+
+        <activity android:name=".MainActivity" />
+
         <activity android:name=".SubActivity" />
 
         <activity android:name=".SharedActivity"/>
@@ -35,7 +39,7 @@
         <activity android:name=".WebViewActivity"/>
 
         <activity
-            android:name=".MainActivity"
+            android:name=".LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

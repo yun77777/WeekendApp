@@ -2,6 +2,7 @@ package com.example.myapplication;
 
 import com.example.myapplication.DTO.JoinData;
 import com.example.myapplication.DTO.JoinResponse;
+import com.example.myapplication.DTO.LoginData;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -20,8 +21,14 @@ import retrofit2.http.Query;
 public interface ApiService {
 
     @Headers({"Content-Type: application/json"})
-    @POST("/retrofit/post/test")
-    Call<JoinResponse> userJoin(@Body JoinData data);
+    @POST("/user/login")
+    Call<ResponseBody> postLoginFunc(@Body LoginData data);
+
+    @Headers({"Content-Type: application/json"})
+    @POST("/user/join")
+    Call<ResponseBody> postJoinFunc(@Body JoinData data);
+
+
 
     @GET("/retrofit/get")
     Call<ResponseBody> getFunc(@Query("data") String data);
@@ -29,12 +36,6 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("/retrofit/post")
     Call<ResponseBody> postFunc(@Field("data") String data);
-
-    @Headers({"Content-Type: application/json"})
-    @POST("/retrofit/post/test")
-//    Call<JoinResponse> postJoinFunc(@Body JoinData data);
-    Call<ResponseBody> postJoinFunc(@Body JoinData data);
-
 
     @FormUrlEncoded
     @PUT("/retrofit/put/{id}")
