@@ -19,8 +19,10 @@ import com.example.myapplication.Fragment.HomeFragment;
 import com.example.myapplication.R;
 import com.example.myapplication.Fragment.SettingsFragment;
 import com.example.myapplication.Fragment.UserFragment;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -50,10 +52,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setSelectedItemId(R.id.home);
 
-
-
         getSupportFragmentManager().beginTransaction().replace(R.id.home_ly, new HomeFragment()).commit();
-
 
         retrofit = new Retrofit.Builder()
                 .baseUrl(URL)

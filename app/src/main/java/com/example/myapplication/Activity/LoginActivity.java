@@ -13,6 +13,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.myapplication.Interface.ApiService;
 import com.example.myapplication.DTO.LoginData;
 import com.example.myapplication.R;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 
@@ -55,6 +57,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         btn_login = (Button)findViewById(R.id.btn_login);
         btn_signup = (Button)findViewById(R.id.btn_signup);
 
+        FirebaseMessaging.getInstance().getToken().addOnSuccessListener(new OnSuccessListener<String>() {
+            @Override
+            public void onSuccess(String token) {
+                Log.d("device token:", token);
+            }
+        });
 
         retrofit = new Retrofit.Builder()
                 .baseUrl(URL)
