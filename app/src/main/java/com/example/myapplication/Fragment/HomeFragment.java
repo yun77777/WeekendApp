@@ -12,6 +12,8 @@ import android.webkit.WebViewClient;
 
 import com.example.myapplication.R;
 
+import kr.co.bootpay.BootpayWebView;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link HomeFragment#newInstance} factory method to
@@ -65,7 +67,8 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         //         android:id="@+id/wv_home"
-        WebView webView = view.findViewById(R.id.wv_home);
+
+        BootpayWebView webView = view.findViewById(R.id.wv_home);
         webView.getSettings().setJavaScriptEnabled(true);
         webView.setWebViewClient(new WebViewClient());
 

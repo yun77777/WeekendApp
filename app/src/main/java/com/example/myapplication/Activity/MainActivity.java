@@ -1,10 +1,14 @@
 package com.example.myapplication.Activity;//package com.example.myapplication;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.Switch;
@@ -24,6 +28,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.messaging.FirebaseMessaging;
 
+import kr.co.bootpay.BootpayWebView;
+import kr.co.bootpay.listener.EventListener;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -36,6 +42,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private Retrofit retrofit;
     private ApiService service;
+
+    private BootpayWebView webview;
+    private String url = "file:///android_asset/index.html"; // instead of localhost
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +72,69 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         Log.d("retrofit:",retrofit.toString());
         Log.d("service:",service.toString());
+
+
+        webview = (BootpayWebView)findViewById(R.id.wv_home);
+        webview.setWebViewClient(new WebViewClient() {
+            @Override public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                Log.d("sssss", url);
+                try { /** * 201229 * 카카오링크 오류 수정을 위해 아래 if문을 추가함. */
+                    if (url != null && url.startsWith("intent://kakaopay/")) {
+                        try {
+                            Intent intent = Intent.parseUri(url, Intent.URI_INTENT_SCHEME);
+                            Intent existPackage = getPackageManager().getLaunchIntentForPackage(intent.getPackage());
+                            if (existPackage != null) { startActivity(intent); }
+                            else { Intent marketIntent = new Intent(Intent.ACTION_VIEW);
+                                marketIntent.setData(Uri.parse("pg?url=" + intent.getPackage()));
+                                startActivity(marketIntent); } return true; } catch (Exception e) { e.printStackTrace(); } } }
+                catch (Exception e) { e.printStackTrace(); return false; } return false; }
+
+        });
+
+        webview.setOnResponseListener(new EventListener() {
+            @Override
+            public void onError(String data) {
+                System.out.println("bootpay error");
+                System.out.println(data);
+            }
+
+            @Override
+            public void onCancel(String data) {
+                System.out.println("bootpay cancel");
+                System.out.println(data);
+            }
+
+            @Override
+            public void onClose(String data) {
+                System.out.println("bootpay close");
+                System.out.println(data);
+            }
+
+            @Override
+            public void onReady(String data) {
+                System.out.println("bootpay ready");
+                System.out.println(data);
+            }
+
+            @Override
+            public void onConfirm(String data) {
+                boolean iWantPay = true;
+                if(iWantPay == true) { // 재고가 있을 경우
+                    doJavascript("BootPay.transactionConfirm( " + data + ");");
+                } else {
+                    doJavascript("BootPay.removePaymentWindow();");
+                }
+            }
+
+            @Override
+            public void onDone(String data) {
+                System.out.println("bootpay done");
+                System.out.println(data);
+
+            }
+        });
+        webview.loadUrl(url);
+
     }
 
     @Override
@@ -114,6 +187,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
                 }
                 return false;
+            }
+        });
+    }
+
+
+    void doJavascript(String script) {
+        final String str = script;
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                webview.loadUrl("javascript:(function(){" + str + "})()");
             }
         });
     }
