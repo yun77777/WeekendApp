@@ -1,5 +1,6 @@
 package com.example.myapplication.Activity;//package com.example.myapplication;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -46,6 +47,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private BootpayWebView webview;
     private String url = "file:///android_asset/index.html"; // instead of localhost
 
+    private String email;
+
+    private SettingsFragment sf;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +62,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void init() {
+
+//        SharedPreferences sp = this.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences sp = getApplicationContext().getSharedPreferences("user", Context.MODE_PRIVATE);
+        String email = sp.getString("email", "");
+        Log.d("get email:", email);
+
+        Bundle bundle = new Bundle();
+        bundle.putString("email", email);
+
+        sf = new SettingsFragment();
+        sf.setArguments(bundle);
+
+
         home_ly = findViewById(R.id.home_ly);
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setSelectedItemId(R.id.home);
@@ -73,68 +90,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Log.d("retrofit:",retrofit.toString());
         Log.d("service:",service.toString());
 
-
-        webview = (BootpayWebView)findViewById(R.id.wv_home);
-        webview.setWebViewClient(new WebViewClient() {
-            @Override public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                Log.d("sssss", url);
-                try { /** * 201229 * 카카오링크 오류 수정을 위해 아래 if문을 추가함. */
-                    if (url != null && url.startsWith("intent://kakaopay/")) {
-                        try {
-                            Intent intent = Intent.parseUri(url, Intent.URI_INTENT_SCHEME);
-                            Intent existPackage = getPackageManager().getLaunchIntentForPackage(intent.getPackage());
-                            if (existPackage != null) { startActivity(intent); }
-                            else { Intent marketIntent = new Intent(Intent.ACTION_VIEW);
-                                marketIntent.setData(Uri.parse("pg?url=" + intent.getPackage()));
-                                startActivity(marketIntent); } return true; } catch (Exception e) { e.printStackTrace(); } } }
-                catch (Exception e) { e.printStackTrace(); return false; } return false; }
-
-        });
-
-        webview.setOnResponseListener(new EventListener() {
-            @Override
-            public void onError(String data) {
-                System.out.println("bootpay error");
-                System.out.println(data);
-            }
-
-            @Override
-            public void onCancel(String data) {
-                System.out.println("bootpay cancel");
-                System.out.println(data);
-            }
-
-            @Override
-            public void onClose(String data) {
-                System.out.println("bootpay close");
-                System.out.println(data);
-            }
-
-            @Override
-            public void onReady(String data) {
-                System.out.println("bootpay ready");
-                System.out.println(data);
-            }
-
-            @Override
-            public void onConfirm(String data) {
-                boolean iWantPay = true;
-                if(iWantPay == true) { // 재고가 있을 경우
-                    doJavascript("BootPay.transactionConfirm( " + data + ");");
-                } else {
-                    doJavascript("BootPay.removePaymentWindow();");
-                }
-            }
-
-            @Override
-            public void onDone(String data) {
-                System.out.println("bootpay done");
-                System.out.println(data);
-
-            }
-        });
-        webview.loadUrl(url);
-
     }
 
     @Override
@@ -145,6 +100,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             default:
                 break;
         }
+    }
+
+    @Override public void onBackPressed() {
+        super.onBackPressed();
+        Log.d("back button is pressed","in activity");
     }
 
     private void SettingListener() {
@@ -182,7 +142,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     case R.id.tab_settings: {
                         Log.e("settings: ", String.valueOf(id));
 
-                        getSupportFragmentManager().beginTransaction().replace(R.id.home_ly, new SettingsFragment()).commit();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.home_ly, sf).commit();
                         return true;
                     }
                 }
@@ -192,14 +152,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-    void doJavascript(String script) {
-        final String str = script;
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                webview.loadUrl("javascript:(function(){" + str + "})()");
-            }
-        });
-    }
 }
 

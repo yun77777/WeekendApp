@@ -10,8 +10,12 @@ public class LoginData {
     @SerializedName("email")
     private String email;
 
-    public LoginData(String password, String email) {
+    @SerializedName("device")
+    private String device;
+
+    public LoginData(String password, String email, String device) {
         this.password=password;
         this.email=email;
+        this.device=device;
     }
 }

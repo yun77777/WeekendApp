@@ -1,6 +1,8 @@
 package com.example.myapplication.Activity;//package com.example.myapplication;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -41,6 +43,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private Retrofit retrofit;
     private ApiService service;
 
+    private String email;
+    private String pw;
+    private String device;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,6 +66,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         FirebaseMessaging.getInstance().getToken().addOnSuccessListener(new OnSuccessListener<String>() {
             @Override
             public void onSuccess(String token) {
+                device = token;
                 Log.d("device token:", token);
             }
         });
@@ -81,12 +88,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         switch (v.getId()) {
 
             case R.id.btn_login:
-                String email = et_email.getText().toString();
-                String pw = et_pw.getText().toString();
+                email = et_email.getText().toString();
+                pw = et_pw.getText().toString();
                 Log.d("email:", email);
                 Log.d("pw:", pw);
+                Log.d("device:", device);
 
-                Call<ResponseBody> call_post = service.postLoginFunc(new LoginData(pw,email));
+                LoginData user = new LoginData(pw, email, device);
+                Call<ResponseBody> call_post = service.postLoginFunc(user);
                 call_post.enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -106,11 +115,27 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 if(status == null) return;
                                 switch(status) {
                                     case "login":
+                                        Log.d("SUCCESSFULL LOGGED IN", status);
                                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+//                                        intent.putExtra("email",email);
+//                                        intent.putExtra("device", device);
+
+                                        SharedPreferences sp = getApplicationContext().getSharedPreferences("user", Context.MODE_PRIVATE);
+                                        SharedPreferences.Editor editor = sp.edit();
+                                        editor.putString("email", email);
+                                        editor.putString("device", device);
+                                        editor.apply();
+
+                                        Log.d("login activity email:", email);
+                                        Log.d("login activity device:", device);
+
                                         startActivity(intent);
                                         break;
                                     case "signup":
                                         intent = new Intent(LoginActivity.this, JoinActivity.class);
+                                        intent.putExtra("device", device);
+                                        Log.d("login activity email:", email);
+                                        Log.d("login activity device:", device);
                                         startActivity(intent);
                                         break;
                                     default:
@@ -139,6 +164,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 break;
             case R.id.btn_signup:
                 Intent intent = new Intent(LoginActivity.this, JoinActivity.class);
+                intent.putExtra("device", device);
+                Log.d("login activity device:", device);
                 startActivity(intent);
                 break;
             default:

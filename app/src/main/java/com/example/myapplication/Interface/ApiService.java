@@ -28,6 +28,8 @@ public interface ApiService {
     @POST("/user/join")
     Call<ResponseBody> postJoinFunc(@Body JoinData data);
 
+    @GET("/user/logout")
+    Call<ResponseBody> getLogoutFunc(@Query("data") String data);
 
 
     @GET("/retrofit/get")

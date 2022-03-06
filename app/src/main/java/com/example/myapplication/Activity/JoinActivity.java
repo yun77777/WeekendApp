@@ -39,6 +39,8 @@ public class JoinActivity extends AppCompatActivity implements View.OnClickListe
     private Retrofit retrofit;
     private ApiService service;
 
+    private String device;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +52,9 @@ public class JoinActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void init() {
+        Intent intent = getIntent();
+        device = intent.getStringExtra("device");
+
         et_email = (EditText)findViewById(R.id.et_email);
         et_pw = (EditText)findViewById(R.id.et_pw);
         et_name = (EditText)findViewById(R.id.et_name);
@@ -77,7 +82,7 @@ public class JoinActivity extends AppCompatActivity implements View.OnClickListe
                 String name = et_name.getText().toString();
                 String pw = et_pw.getText().toString();
 
-                Call<ResponseBody> call_post = service.postJoinFunc(new JoinData(pw,name,email));
+                Call<ResponseBody> call_post = service.postJoinFunc(new JoinData(pw, name, email, device));
                 call_post.enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -98,10 +103,16 @@ public class JoinActivity extends AppCompatActivity implements View.OnClickListe
                                 switch(status) {
                                     case "login":
                                         Intent intent = new Intent(JoinActivity.this, MainActivity.class);
+                                        intent.putExtra("email",email);
+                                        intent.putExtra("device", device);
+
                                         startActivity(intent);
                                         break;
                                     case "signup":
                                         intent = new Intent(JoinActivity.this, JoinActivity.class);
+                                        intent.putExtra("email",email);
+                                        intent.putExtra("device", device);
+
                                         startActivity(intent);
                                         break;
                                     default:

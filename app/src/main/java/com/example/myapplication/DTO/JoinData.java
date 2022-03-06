@@ -13,9 +13,13 @@ public class JoinData {
     @SerializedName("email")
     private String email;
 
-    public JoinData(String password, String name, String email) {
+    @SerializedName("device")
+    private String device;
+
+    public JoinData(String password, String name, String email, String device) {
         this.password=password;
         this.name=name;
         this.email=email;
+        this.device=device;
     }
 }

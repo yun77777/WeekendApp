@@ -22,6 +22,11 @@
             android:textOff="Off"
             android:textOn="On"
             android:checked="true" />
+        <Button
+            android:id="@+id/btn_logout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="logout"/>
     </LinearLayout>
 
 </FrameLayout>

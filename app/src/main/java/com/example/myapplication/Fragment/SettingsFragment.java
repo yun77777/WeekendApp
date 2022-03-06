@@ -1,19 +1,38 @@
 package com.example.myapplication.Fragment;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Switch;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 
+import com.example.myapplication.Activity.JoinActivity;
+import com.example.myapplication.Activity.LoginActivity;
+import com.example.myapplication.Activity.MainActivity;
+import com.example.myapplication.DTO.LoginData;
+import com.example.myapplication.Interface.ApiService;
 import com.example.myapplication.R;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
+
+import java.io.IOException;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -30,6 +49,8 @@ public class SettingsFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private String email;
 
     public SettingsFragment() {
         // Required empty public constructor
@@ -60,6 +81,8 @@ public class SettingsFragment extends Fragment {
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
+            email = getArguments().getString("email");
+            Log.d("email from activity:", email);
         }
 
 
@@ -68,6 +91,7 @@ public class SettingsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.d("email from activity2:", email);
 
         ViewGroup view = (ViewGroup) inflater.inflate(R.layout.fragment_settings, container, false);
 
@@ -95,6 +119,66 @@ public class SettingsFragment extends Fragment {
                 editor.commit();
                 Log.e("b:", String.valueOf(b));
 
+            }
+        });
+
+
+        Retrofit retrofit;
+        ApiService service;
+        final String URL = "http://10.0.2.2:5000";
+
+        retrofit = new Retrofit.Builder()
+                .baseUrl(URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        service = retrofit.create(ApiService.class);
+
+
+        Button btn_logout = (Button) view.findViewById(R.id.btn_logout);
+
+        btn_logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("email:",email);
+
+                Call<ResponseBody> call_post = service.getLogoutFunc(email);
+                call_post.enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        if (response.isSuccessful()) {
+                            String result = null;
+                            try {
+                                result = response.body().string();
+                                JsonParser jsonParser = new JsonParser();
+                                JsonElement element = jsonParser.parse(result);
+
+                                String msg = element.getAsJsonObject().get("msg").getAsString();
+                                String status = element.getAsJsonObject().get("status") != null ? element.getAsJsonObject().get("status").getAsString() : null;
+                                Toast.makeText(getActivity().getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+
+                                System.out.println("msg : " + msg);
+
+
+                                Intent intent = new Intent(getActivity(), MainActivity.class);
+                                startActivity(intent);
+
+
+
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+
+
+                        } else {
+                            Toast.makeText(getActivity().getApplicationContext(), "error = " + String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        Toast.makeText(getActivity().getApplicationContext(), "Response Fail", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
 
